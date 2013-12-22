@@ -8,28 +8,24 @@ package main
 
 import (
 	"github.com/pzduniak/burrow"
-	"github.com/pzduniak/graval"
 	"log"
 )
 
 func main() {
-	// /home/test is the main server path
-	// The second parameter is the authentication function
-	factory := &burrow.PomFTPFactory{"/home/test", func(username string, password string) bool {
-		if username == "test" && password == "1234" {
-			return true
-		}
+	err := burrow.NewServer(burrow.Config{
+		HomePath: "/home/test",
+		Authenticate: func(username string, password string) bool {
+			if username == "test" && password == "1234" {
+				return true
+			}
 
-		return false
-	}}
+			return false
+		},
+		Port: 21,
+	}).Listen()
 
-	// Burrow only works with my fork of Graval, because of non-backwards-compatible patches
-	// that allow support of large files
-	ftpServer := graval.NewFTPServer(&graval.FTPServerOpts{Factory: factory, Port: 21})
-	err := ftpServer.ListenAndServe()
 	if err != nil {
-		log.Fatalf("Error starting server: %s", err)
+		log.Printf("Error while listening: %s", err)
 	}
 }
-
 ```
