@@ -13,8 +13,8 @@ import (
 )
 
 func main() {
-  // /home/test is the main server path
-  // The second parameter is the authentication function
+	// /home/test is the main server path
+	// The second parameter is the authentication function
 	factory := &burrow.PomFTPFactory{"/home/test", func(username string, password string) bool {
 		if username == "test" && password == "1234" {
 			return true
@@ -23,8 +23,8 @@ func main() {
 		return false
 	}}
 
-  // Burrow only works with my fork of Graval, because of non-backwards-compatible patches
-  // that allow support of large files
+	// Burrow only works with my fork of Graval, because of non-backwards-compatible patches
+	// that allow support of large files
 	ftpServer := graval.NewFTPServer(&graval.FTPServerOpts{Factory: factory, Port: 21})
 	err := ftpServer.ListenAndServe()
 	if err != nil {
