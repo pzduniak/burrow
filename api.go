@@ -7,6 +7,7 @@ import (
 type Config struct {
 	HomePath     string
 	Authenticate func(string, string) bool
+	Hostname     string
 	Port         int
 }
 
@@ -18,7 +19,11 @@ func NewServer(cfg Config) *Server {
 	server := new(Server)
 
 	factory := &PomFTPFactory{cfg.HomePath, cfg.Authenticate}
-	server.ftp = graval.NewFTPServer(&graval.FTPServerOpts{Factory: factory, Port: cfg.Port})
+	server.ftp = graval.NewFTPServer(&graval.FTPServerOpts{
+		Factory: factory,
+		Hostname: cfg.Hostname,
+		Port: cfg.Port,
+	})
 
 	return server
 }
